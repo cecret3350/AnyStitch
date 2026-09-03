@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AnyStitch — generative large parallax image stitching." />
+  <title>AnyStitch — Generative Large Parallax Image Stitching</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="grain"></div>
+  <header class="nav-wrap">
+    <nav class="nav container">
+      <a class="brand" href="#top" aria-label="AnyStitch home"><span class="brand-mark">✳</span> AnyStitch</a>
+      <div class="nav-links">
+        <a href="#overview">Overview</a><a href="#method">Method</a><a href="#citation">Citation</a>
+      </div>
+      <div class="nav-actions"><span class="pill ghost nav-pill">Paper <span>↗</span></span><span class="pill ghost nav-pill">Code <span>↗</span></span><span class="pill ghost nav-pill">Dataset <span>↗</span></span><span class="pill ghost nav-pill">Demo <span>↗</span></span></div>
+      <button class="menu" aria-label="Open menu">☰</button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero container" id="overview">
+      <div class="eyebrow"><span class="dot"></span><span class="venue venue-primary">ACM TOG</span><span class="venue venue-secondary">SIGGRAPH ASIA 2026</span></div>
+      <h1>AnyStitch</h1>
+      <p class="hero-subtitle">Generative Large Parallax Image Stitching</p>
+      <p class="hero-lede">AnyStitch turns casually captured views into coherent, high-resolution panoramas — even when large parallax makes traditional stitching break.</p>
+      <div class="hero-cta"><a class="pill solid large" href="#method">Explore the method <span>↓</span></a></div>
+      <div class="hero-art">
+        <img src="assets/teaser.png" alt="AnyStitch teaser showing 2-view, 10-view and 22-view panorama stitching results" />
+        <div class="scanline"></div>
+      </div>
+    </section>
+
+    <!-- Temporarily hidden while the motivation copy is being revised.
+    <section class="statement container">
+      <p class="section-kicker">THE PROBLEM</p>
+      <div class="statement-grid"><h2>Large parallax is<br /><span>a 3D problem.</span></h2><p>Traditional stitching first warps images with homographies or optical flow, then blends them into a panorama. These 2D transformations work under limited parallax, but camera translation exposes different foreground and background geometry—causing misalignment, seams, and ghosting. AnyStitch instead formulates stitching as reference-based image generation, grounded by estimated depth and camera poses.</p></div>
+      <div class="metric-row"><div class="metric"><strong>2–22</strong><span>variable input views</span></div><div class="metric"><strong>3D</strong><span>depth &amp; camera grounding</span></div><div class="metric"><strong>4</strong><span>projection families</span></div><div class="metric accent"><strong>DiT</strong><span>generative stitching</span></div></div>
+    </section> -->
+
+    <section class="marquee"><div class="marquee-track"><div class="marquee-group">GENERATIVE STITCHING <span>✳</span> LARGE PARALLAX <span>✳</span> FLEXIBLE PROJECTIONS <span>✳</span> </div><div class="marquee-group">GENERATIVE STITCHING <span>✳</span> LARGE PARALLAX <span>✳</span> FLEXIBLE PROJECTIONS <span>✳</span> </div><div class="marquee-group" aria-hidden="true">GENERATIVE STITCHING <span>✳</span> LARGE PARALLAX <span>✳</span> FLEXIBLE PROJECTIONS <span>✳</span> </div><div class="marquee-group" aria-hidden="true">GENERATIVE STITCHING <span>✳</span> LARGE PARALLAX <span>✳</span> FLEXIBLE PROJECTIONS <span>✳</span> </div></div></section>
+
+    <section class="method container" id="method">
+      <div class="section-head"><div><p class="section-kicker">THE CORE IDEA</p><h2>Geometry in.<br /><span>Generative coherence out.</span></h2></div></div>
+      <div class="pipeline-card"><img src="assets/pipeline.png" alt="AnyStitch pipeline showing 3D feed-forward model, HPRoPE and autoregressive DiT" /></div>
+      <div class="method-grid"><article class="method-card"><div class="num">01</div><h3>HPRoPE</h3><p>Hierarchical Projected Rotary Positional Encoding unifies input tokens and the target canvas in 3D. Dense-depth heads capture detail; median-depth heads stay robust to noisy geometry.</p></article><article class="method-card"><div class="num">02</div><h3>Spatial autoregression</h3><p>The panorama is generated patch by patch. Overlapped regions are carried forward as memory tokens, and relative RoPE keeps positions consistent across windows—supporting effectively unbounded generation.</p></article></div>
+    </section>
+
+    <!-- Temporarily hidden while the media layout is being revised.
+    <section class="demo container" id="demo"><div class="demo-head"><div><p class="section-kicker">WATCH THE MODEL THINK</p><h2>From fragments<br /><span>to a world.</span></h2></div><a class="pill ghost" href="assets/any-stitch-demo.mp4" target="_blank">Open full video ↗</a></div><div class="video-frame"><video autoplay muted loop playsinline poster="assets/hero-panorama.png"><source src="assets/any-stitch-demo.mp4" type="video/mp4" /></video><div class="video-overlay"><span class="play-ring">▶</span><span>SUPPLEMENTARY VIDEO · 01:42</span></div></div></section> -->
+
+    <!-- Temporarily hidden while the results layout is being revised.
+    <section class="results container" id="results"><div class="section-head"><div><p class="section-kicker">VISUAL RESULTS</p><h2>Look around.<br /><span>Nothing falls apart.</span></h2></div><p class="section-note">Swipe through representative scenes and inspect how geometry-aware generation completes occlusions, depth conflicts and unseen regions.</p></div><div class="tabs" role="tablist"><button class="tab active" data-scene="mountain">01 · MOUNTAIN</button><button class="tab" data-scene="city">02 · CITY</button><button class="tab" data-scene="coverage">03 · COVERAGE</button></div><div class="result-stage"><div class="result-meta"><span id="resultTitle">Equirectangular panorama</span><span id="resultSub">Flexible target view · 5 inputs</span></div><div class="result-image-wrap"><img id="resultImage" src="assets/village-panorama.png" alt="AnyStitch panorama result" /><div class="result-tag">ANY STITCH / OURS</div></div><div class="result-description" id="resultDescription">A single coherent canvas synthesized from a sparse set of mountain views.</div></div><div class="compare-grid"><div class="compare-card"><div class="compare-label">INPUT COVERAGE</div><img src="assets/coverage-input.png" alt="Projected input coverage" /></div><div class="compare-card"><div class="compare-label">HPRoPE MASK</div><img src="assets/coverage-mask.png" alt="Coverage mask visualization" /></div><div class="compare-card"><div class="compare-label">FINAL OUTPUT</div><img src="assets/rope-result.png" alt="Stitched output" /></div></div></section> -->
+
+    <section class="citation container" id="citation"><div class="citation-head"><div><p class="section-kicker">CITATION</p></div><button class="pill solid" id="copyCitation">Copy BibTeX <span>⧉</span></button></div><pre id="bibtex">@article{anystitch2026,
+  title     = {AnyStitch: Generative Large Parallax Image Stitching},
+  author    = {Anonymous Authors},
+  journal   = {ACM Transactions on Graphics},
+  year      = {2026}
+}</pre><div class="citation-links"><a href="assets/AnyStitch-paper.pdf" target="_blank">Read the paper <span>↗</span></a><a href="assets/any-stitch-demo.mp4" target="_blank">Supplementary video <span>↗</span></a><a href="#top">Back to top <span>↑</span></a></div></section>
+  </main>
+
+  <footer class="footer container"><span>ANY STITCH</span><span>Generative large parallax image stitching · 2026</span><span>✳</span></footer>
+  <script src="script.js"></script>
+</body>
+</html>
