@@ -1,0 +1,22 @@
+{
+  "python": "3.12.13",
+  "packages": {
+    "torch": "2.13.0",
+    "torchvision": "0.28.0",
+    "transformers": "4.57.1",
+    "numpy": "1.26.4",
+    "Pillow": "12.3.0",
+    "opencv-python-headless": "4.11.0.86",
+    "scipy": "1.17.1",
+    "safetensors": "0.8.0",
+    "einops": "0.8.2",
+    "huggingface-hub": "0.36.2",
+    "modelscope": "1.39.0",
+    "accelerate": "1.14.0",
+    "peft": "0.14.0",
+    "depth-anything-3": "0.0.0",
+    "omegaconf": "2.3.1"
+  },
+  "da3_revision": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
+  "note": "Observed existing diffsynth environment; not a portable dependency lock. Model weights are not included."
+}

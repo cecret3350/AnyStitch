@@ -1,0 +1,81 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "diffsynth"
+version = "2.0.2"
+description = "Geometry-guided batch image stitching with DA3 and FLUX.2 Klein"
+readme = "README.md"
+authors = [{name = "ModelScope Team"}]
+license = {text = "Apache-2.0"}
+requires-python = ">=3.10.1"
+dependencies = [
+    "torch>=2.0.0",
+    "torchvision",
+    "transformers==4.57.1",
+    "imageio",
+    "imageio[ffmpeg]",
+    "safetensors",
+    "einops",
+    "sentencepiece",
+    "protobuf",
+    "modelscope",
+    "ftfy",
+    "pandas",
+    "accelerate",
+    "peft==0.14.0",
+    "datasets",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.packages.find]
+where = ["./"]
+include = ["diffsynth", "diffsynth.*", "tools", "tools.scenic_demo"]
+
+[project.scripts]
+guided-stitch = "tools.scenic_demo.batch_prestitch:main"
+
+[project.optional-dependencies]
+batch = [
+    "numpy>=1.26,<2",
+    "Pillow>=10",
+    "opencv-python>=4.8,<5",
+    "scipy>=1.11",
+    "huggingface-hub>=0.34,<1",
+    "omegaconf>=2.3",
+    "e3nn",
+    "evo",
+    "fastapi",
+    "moviepy==1.0.3",
+    "open3d",
+    "pillow-heif",
+    "plyfile",
+    "pycolmap",
+    "requests",
+    "trimesh",
+    "typer>=0.9",
+    "uvicorn",
+]
+dev = ["pytest>=8", "build"]
+ui = ["gradio>=5"]
+npu_aarch64 = [
+    "torch==2.7.1",
+    "torch-npu==2.7.1",
+    "torchvision==0.22.1"
+]
+npu = [
+    "torch==2.7.1+cpu",
+    "torch-npu==2.7.1",
+    "torchvision==0.22.1+cpu"
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.pytest.ini_options]
+testpaths = ["tools/scenic_demo/tests"]
