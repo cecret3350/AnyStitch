@@ -9,8 +9,8 @@ body{background:var(--bg)}
 .section-head h2 span{font-size:clamp(28px,6vw,76px);white-space:nowrap}
 .method-grid{grid-template-columns:repeat(2,1fr)}
 .method-card p{max-width:520px}
-.nav-pill{background:var(--panel);border-color:var(--line);color:var(--ink)}
-.nav-pill:hover{background:#e1e4d8}
+.nav-pill{background:var(--lime);border-color:var(--lime);color:#18201e}
+.nav-pill:hover{background:#a7c94b;border-color:#a7c94b}
 .marquee>div.marquee-track{display:flex;width:max-content;animation:marquee-loop 28s linear infinite}
 .marquee .marquee-group{flex:none;min-width:50vw;animation:none}
 @keyframes marquee-loop{to{transform:translateX(-50%)}}
