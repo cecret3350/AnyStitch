@@ -1,10 +1,32 @@
-# Geometry-guided image stitching
+<h1 align="center">AnyStitch</h1>
 
-Estimate multi-view geometry with DA3, render a pre-stitch canvas, and refine it
-patch by patch with FLUX.2 Klein and a stitching LoRA. This guide covers the
-GitHub source checkout and its batch inference workflow.
+<h3 align="center">AnyStitch: Generative Large Parallax Image Stitching</h3>
 
-## 1. Get the code and create a separate environment
+<p align="center">
+  Zixuan Chen &nbsp;·&nbsp; Lingen Li &nbsp;·&nbsp; Junhao Zhuang &nbsp;·&nbsp; Ruikang Li &nbsp;·&nbsp; Tianfan Xue
+</p>
+
+<p align="center">
+  <strong>ACM Transactions on Graphics (TOG) · SIGGRAPH Asia 2026</strong>
+</p>
+
+<p align="center">
+  <a href="https://drive.google.com/drive/folders/1mZIELHAqLJ7cP-nuhiv4f6KY0n-cNgH1?usp=sharing">Training Data &amp; LoRA</a>
+  &nbsp;|&nbsp; <a href="#installation">Installation</a>
+  &nbsp;|&nbsp; <a href="#inference">Inference</a>
+  &nbsp;|&nbsp; <a href="#citation">Citation</a>
+</p>
+
+## Overview
+
+This repository provides the implementation of **AnyStitch: Generative Large
+Parallax Image Stitching**. The batch workflow estimates multi-view geometry with
+DA3, renders a pre-stitch canvas, and refines it patch by patch with FLUX.2 Klein
+and the AnyStitch LoRA.
+
+## Installation
+
+### 1. Get the code and create an environment
 
 Clone this repository (or download and extract its source archive), then enter
 the project root. Use Linux with an NVIDIA GPU and a compatible driver.
@@ -19,7 +41,7 @@ python -m pip install --upgrade pip setuptools wheel
 
 **Run all subsequent commands from the project root with the `anystitch` environment activated.**
 
-## 2. Install PyTorch and ensure it can use the GPU
+### 2. Install PyTorch
 
 ```bash
 python -m pip install torch==2.13.0 torchvision==0.28.0 --index-url https://download.pytorch.org/whl/cu130
@@ -29,7 +51,7 @@ The command above follows the recorded environment in
 [runtime_versions.json](runtime_versions.json), which is not a portable lockfile.
 Your NVIDIA driver must support the selected PyTorch CUDA build.
 
-## 3. Install the project and DA3
+### 3. Install the project and DA3
 
 ```bash
 python -m pip install -e '.[batch]'
@@ -45,7 +67,7 @@ Important details:
 - This project pins `transformers==4.57.1` and `peft==0.14.0`; do not upgrade them independently.
 - Use the modified DiffSynth included here; do not overwrite it by installing upstream DiffSynth separately.
 
-## 4. Verify the installation
+### 4. Verify the installation
 
 The following commands neither download base weights nor run inference:
 
@@ -65,7 +87,7 @@ python tools/scenic_demo/batch_prestitch.py --help
 Expect `Imports OK` and the argument help with no traceback. The DiffSynth path
 should point to this checkout.
 
-## 5. Prepare the weights and input images
+## Models and data
 
 ### Base models
 
@@ -123,7 +145,9 @@ treated as inputs. Batch processing uses natural numeric sorting. TTO uses
 adjacent-frame matching and a weak sequence-smoothness constraint, so do not
 arbitrarily reorder frames.
 
-## 6. Run one scene first, then all scenes
+## Inference
+
+### Single scene
 
 Start with a small scene containing only two images to verify the full pipeline.
 
@@ -137,6 +161,8 @@ Replace all example paths. After a successful run, the output directory's
 `scene_001/` subdirectory should contain `prestitch.png`, `flux.png` and
 `case_result.json`. Flux prints progress for each patch.
 
+### Batch processing
+
 To process all scenes:
 
 ```bash
@@ -146,6 +172,9 @@ CUDA_VISIBLE_DEVICES=0 bash scripts/run_batch.sh \
 ```
 
 The last argument can be changed to `cylindrical` or `equirectangular`.
+
+### Multiple GPUs
+
 With three available GPUs, run the commands in three separate terminals
 (with only one GPU, run them sequentially, using GPU 0 for each):
 
@@ -182,7 +211,10 @@ Panini uses distance 1 and the default General Panini controls.
 The wrapper accepts only input root, output root, LoRA path and projection. For
 other settings, invoke `python tools/scenic_demo/batch_prestitch.py` directly and
 consult `--help`; direct CLI defaults are not identical to the wrapper preset.
-For example, to generate only pre-stitch images with the same geometry settings:
+
+### Pre-stitch only
+
+To generate only pre-stitch images with the same geometry settings:
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python -u tools/scenic_demo/batch_prestitch.py \
@@ -195,7 +227,7 @@ CUDA_VISIBLE_DEVICES=0 python -u tools/scenic_demo/batch_prestitch.py \
   --tto --optimize-target-rotation --resume
 ```
 
-## 7. Outputs, resume and troubleshooting
+## Outputs and troubleshooting
 
 Each scene has its own output directory:
 
@@ -222,7 +254,7 @@ files at the same paths, use a fresh output directory or call the CLI without
 - Gradio is optional and not required for batch inference. The shared UI/adapters
   are in `tools/scenic_demo/prestitch_ui.py`; install `.[ui]` to use the UI.
 
-## 8. Development and acknowledgements
+## Development
 
 Run the CPU regression tests after installing the development dependencies:
 
@@ -230,6 +262,21 @@ Run the CPU regression tests after installing the development dependencies:
 python -m pip install -e '.[batch,dev]'
 python -m pytest tools/scenic_demo/tests -q
 ```
+
+## Citation
+
+If you find AnyStitch useful in your research, please cite:
+
+```bibtex
+@article{chen2026anystitch,
+  title   = {{AnyStitch}: Generative Large Parallax Image Stitching},
+  author  = {Chen, Zixuan and Li, Lingen and Zhuang, Junhao and Li, Ruikang and Xue, Tianfan},
+  journal = {ACM Transactions on Graphics (TOG)},
+  year    = {2026}
+}
+```
+
+## Acknowledgements and license
 
 This repository includes modified [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio)
 code and uses [Depth Anything 3](https://github.com/ByteDance-Seed/Depth-Anything-3)
